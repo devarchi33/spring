@@ -9,8 +9,6 @@ import static spring05.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import spring05.user.dao.UserDao;
 import spring05.user.util.TestUtil;
@@ -41,7 +40,7 @@ public class UserServiceTest {
 	TestUtil testUtil;
 
 	@Autowired
-	DataSource dataSource;
+	PlatformTransactionManager transactionManager;
 
 	List<User> users;
 	User[] userArray = {
@@ -107,7 +106,7 @@ public class UserServiceTest {
 		assertThat(userWithLevelRead.getLevels(), is(userWithLevel.getLevels()));
 		assertThat(userWithouUserRead.getLevels(), is(Levels.BASIC));
 		logger.debug("******* 초기 레벨 설정 테스트가 성공하였습니다. *******");
-	
+
 		System.out.println();
 		System.out.println();
 	}
@@ -140,7 +139,7 @@ public class UserServiceTest {
 		logger.debug("=======  트랜잭션 처리 테스트 =======");
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
-		testUserService.setDataSource(this.dataSource);
+		testUserService.setTransactionManager(transactionManager);
 
 		userDao.deleteAll();
 
@@ -156,7 +155,7 @@ public class UserServiceTest {
 		}
 
 		testUtil.checkLevelUpgraded(users.get(1), false);
-		
+
 		System.out.println();
 		System.out.println();
 	}

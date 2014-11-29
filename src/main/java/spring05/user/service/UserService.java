@@ -2,12 +2,9 @@ package spring05.user.service;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -21,10 +18,10 @@ public class UserService {
 			.getLogger(UserService.class);
 
 	@Autowired
-	DataSource dataSource;
-
-	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	PlatformTransactionManager transactionManager;
 
 	protected static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	protected static final int MIN_RECOMMEND_FOR_GOLD = 30;
@@ -32,9 +29,9 @@ public class UserService {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	
+	public void setTransactionManager(PlatformTransactionManager transactionManager){
+		this.transactionManager = transactionManager;
 	}
 
 	public void upgradeLevel(User user) {
@@ -57,9 +54,6 @@ public class UserService {
 	}
 
 	public void upgradeLevels() throws Exception {
-		PlatformTransactionManager transactionManager = new DataSourceTransactionManager(
-				dataSource);
-
 		// 트랜잭션 시작
 		TransactionStatus status = transactionManager
 				.getTransaction(new DefaultTransactionDefinition());

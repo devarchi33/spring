@@ -23,8 +23,13 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<bean id="testUtil" class="spring05.user.util.TestUtil" />
 
 	<bean id="userService " class="spring05.user.service.UserService">
-		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
 		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 </beans>
