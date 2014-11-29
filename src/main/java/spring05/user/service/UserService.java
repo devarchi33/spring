@@ -1,14 +1,14 @@
 package spring05.user.service;
 
-import java.sql.Connection;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -23,7 +23,7 @@ public class UserService {
 			.getLogger(UserService.class);
 
 	@Autowired
-	SimpleDriverDataSource dataSource;
+	DataSource dataSource;
 
 	@Autowired
 	UserDao userDao;
@@ -35,7 +35,7 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	public void setDataSource(SimpleDriverDataSource dataSource) {
+	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
