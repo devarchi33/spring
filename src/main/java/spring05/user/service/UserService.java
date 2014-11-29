@@ -6,8 +6,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import spring05.user.dao.UserDao;
@@ -55,9 +59,11 @@ public class UserService {
 	}
 
 	public void upgradeLevels() throws Exception {
-		TransactionSynchronizationManager.initSynchronization();
-		Connection c = DataSourceUtils.getConnection(dataSource);
-		c.setAutoCommit(false);
+		PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+
+		//트랜잭션 시작
+		TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		
 		try {
 			List<User> users = userDao.getAll();
 			for (User user : users) {
@@ -65,10 +71,10 @@ public class UserService {
 					upgradeLevel(user);
 				}
 			}
-			c.commit();
+			transactionManager.commit(status);
 			logger.debug("******* 작업이 성공적으로 DB에 반영되었습니다. *******");
 		} catch (Exception e) {
-			c.rollback();
+			transactionManager.rollback(status);
 			logger.debug("******* 작업 도중 문제가 생겨서 취소 되었습니다. *******");
 			throw e;
 		} finally {
