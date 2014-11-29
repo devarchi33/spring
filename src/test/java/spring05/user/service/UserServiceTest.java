@@ -121,7 +121,7 @@ public class UserServiceTest {
 		public void upgradeLevel(User user) {
 			if (user.getId().equals(this.id))
 				throw new TestUserServiceException();
-			super.upgradeLevel(user);
+			super.levelUpgradePolicy.upgradeLevel(user);
 		}
 	}
 

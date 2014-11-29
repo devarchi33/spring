@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import spring05.user.dao.UserDao;
+import spring05.user.policy.LevelUpgradePolicy;
 import spring05.user.vo.Levels;
 import spring05.user.vo.User;
 
@@ -23,9 +24,12 @@ public class UserService {
 
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	LevelUpgradePolicy levelUpgradePolicy;
 
-	protected static final int MIN_LOGCOUNT_FOR_SILVER = 50;
-	protected static final int MIN_RECOMMEND_FOR_GOLD = 30;
+	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
+	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -33,25 +37,10 @@ public class UserService {
 
 	public void setDataSource(SimpleDriverDataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-
-	public void upgradeLevel(User user) {
-		user.upgradeLevel();
-		userDao.update(user);
-	}
-
-	public boolean canUpgradeLevel(User user) {
-		Levels currentLevel = user.getLevels();
-		switch (currentLevel) {
-		case BASIC:
-			return (user.getLevels() == Levels.BASIC && user.getLogin() >= MIN_LOGCOUNT_FOR_SILVER);
-		case SILVER:
-			return (user.getLevels() == Levels.SILVER && user.getRecommend() >= MIN_RECOMMEND_FOR_GOLD);
-		case GOLD:
-			return false;
-		default:
-			throw new IllegalStateException("Unknown Level : " + currentLevel);
-		}
+	}	
+	
+	public void setLevelUpgradePolicy(LevelUpgradePolicy levelUpgradePolicy){
+		this.levelUpgradePolicy = levelUpgradePolicy;
 	}
 
 	public void upgradeLevels() throws Exception {
@@ -61,8 +50,8 @@ public class UserService {
 		try {
 			List<User> users = userDao.getAll();
 			for (User user : users) {
-				if (canUpgradeLevel(user)) {
-					upgradeLevel(user);
+				if (levelUpgradePolicy.canUpgradeLevel(user)) {
+					levelUpgradePolicy.upgradeLevel(user);
 				}
 			}
 			c.commit();
