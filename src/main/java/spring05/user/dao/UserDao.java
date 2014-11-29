@@ -4,10 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import spring05.user.vo.Levels;
 import spring05.user.vo.User;
@@ -17,7 +18,7 @@ public class UserDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	public void setDataSource(SimpleDriverDataSource dataSource) {
+	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
