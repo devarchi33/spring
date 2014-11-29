@@ -9,13 +9,14 @@ import static spring05.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,7 +41,7 @@ public class UserServiceTest {
 	TestUtil testUtil;
 
 	@Autowired
-	SimpleDriverDataSource dataSource;
+	DataSource dataSource;
 
 	List<User> users;
 	User[] userArray = {
