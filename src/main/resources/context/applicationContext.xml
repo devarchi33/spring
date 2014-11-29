@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="username" value="spring" />
+		<property name="password" value="spring" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="userDao" class="spring05.user.dao.UserDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="testUtil" class="spring05.user.util.TestUtil" />
+
+	<bean id="userService " class="spring05.user.service.UserService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+</beans>
