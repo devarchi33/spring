@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -42,7 +43,7 @@ public class UserServiceTest {
 
 	@Autowired
 	PlatformTransactionManager transactionManager;
-	
+
 	@Autowired
 	MailSender mailSender;
 
@@ -75,21 +76,40 @@ public class UserServiceTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void upgradeLevel() throws Exception {
 		logger.debug("======= 업그레이드 레벨 테스트 =======");
 		for (User user : users) {
 			userDao.add(user);
 		}
 
-		users.get(0).setLogin(MIN_LOGCOUNT_FOR_SILVER);
-		userDao.update(users.get(0));
-		userService.upgradeLevels();
-		testUtil.checkLevelUpgraded(users.get(0), true);
+		// 메일발송 결과를 테스트할 수 있도록 목 오브젝트를 만들어 UserService의 의존 객체로 주입.
+		MockMailSender mockMailSender = new MockMailSender();
+		userService.setMailSender(mockMailSender);
 
-		users.get(1).setRecommend(MIN_RECOMMEND_FOR_GOLD);
-		userDao.update(users.get(1));
 		userService.upgradeLevels();
+
+		testUtil.checkLevelUpgraded(users.get(0), false);
 		testUtil.checkLevelUpgraded(users.get(1), true);
+		testUtil.checkLevelUpgraded(users.get(2), true);
+		testUtil.checkLevelUpgraded(users.get(3), true);
+		testUtil.checkLevelUpgraded(users.get(4), false);
+
+		List<String> request = mockMailSender.getRequests();
+		assertThat(request.size(), is(3));
+		assertThat(request.get(0), is(users.get(1).getEmail()));
+		assertThat(request.get(1), is(users.get(2).getEmail()));
+		assertThat(request.get(2), is(users.get(3).getEmail()));
+
+		/*
+		 * users.get(0).setLogin(MIN_LOGCOUNT_FOR_SILVER);
+		 * userDao.update(users.get(0)); userService.upgradeLevels();
+		 * testUtil.checkLevelUpgraded(users.get(0), true);
+		 * 
+		 * users.get(1).setRecommend(MIN_RECOMMEND_FOR_GOLD);
+		 * userDao.update(users.get(1)); userService.upgradeLevels();
+		 * testUtil.checkLevelUpgraded(users.get(1), true);
+		 */
 
 		System.out.println();
 		System.out.println();
