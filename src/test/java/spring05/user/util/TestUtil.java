@@ -35,6 +35,7 @@ public class TestUtil {
 		assertThat(user1.getLevels(), is(user2.getLevels()));
 		assertThat(user1.getLogin(), is(user2.getLogin()));
 		assertThat(user1.getRecommend(), is(user2.getRecommend()));
+		assertThat(user1.getEmail(), is(user2.getEmail()));
 		logger.debug("******* 두 유저가 일치 합니다. *******");
 	}
 
@@ -59,6 +60,7 @@ public class TestUtil {
 		logger.info("User Levels : " + user.getLevels());
 		logger.info("User Login : " + user.getLogin());
 		logger.info("User recommend : " + user.getRecommend());
+		logger.info("User Email : " + user.getEmail());
 		System.out.println();
 	}
 }

@@ -36,10 +36,14 @@ public class UserDaoTest {
 
 	List<User> users;
 	User[] userArray = {
-			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0),
-			new User("imfly7", "이현규", "fighting!@", Levels.SILVER, 50, 10),
-			new User("iruentech", "이루엔", "fighting!@#", Levels.SILVER, 100, 30),
-			new User("toby", "이일민", "fighting!@#$", Levels.GOLD, 200, 50) };
+			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0,
+					"imfly7@naver.com"),
+			new User("imfly7", "이현규", "fighting!@", Levels.SILVER, 50, 10,
+					"imfly8@naver.com"),
+			new User("iruentech", "이루엔", "fighting!@#", Levels.SILVER, 100, 30,
+					"imfly9@naver.com"),
+			new User("toby", "이일민", "fighting!@#$", Levels.GOLD, 200, 50,
+					"imfly10@naver.com") };
 
 	@Before
 	public void setUp() {
@@ -70,7 +74,7 @@ public class UserDaoTest {
 		testUtil.printUserInfo(user1);
 		testUtil.printUserInfo(userGet1);
 		logger.debug("******* 등록, 조회 테스트 성공 *******");
-		
+
 		System.out.println();
 		System.out.println();
 	}
@@ -91,7 +95,7 @@ public class UserDaoTest {
 			testUtil.printUserInfo(userGetArray[i]);
 			testUtil.printUserInfo(users.get(i));
 		}
-	
+
 		System.out.println();
 		System.out.println();
 	}

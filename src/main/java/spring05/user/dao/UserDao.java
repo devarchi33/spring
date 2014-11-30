@@ -33,17 +33,17 @@ public class UserDao {
 	}
 
 	public void add(User user) {
-		jdbcTemplate.update("insert into users values (?,?,?,?,?,?)", user
+		jdbcTemplate.update("insert into users values (?,?,?,?,?,?,?)", user
 				.getId(), user.getName(), user.getPassword(), user.getLevels()
-				.intValue(), user.getLogin(), user.getRecommend());
+				.intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 
 	public void update(User user) {
 		jdbcTemplate
-				.update("update users set name = ?, password = ?, levels = ?, login = ?, recommend= ? where id = ?",
+				.update("update users set name = ?, password = ?, levels = ?, login = ?, recommend= ?, email = ? where id = ?",
 						user.getName(), user.getPassword(), user.getLevels()
 								.intValue(), user.getLogin(), user
-								.getRecommend(), user.getId());
+								.getRecommend(),user.getEmail(), user.getId());
 	}
 
 	RowMapper<User> mapper = new RowMapper<User>() {
@@ -57,7 +57,8 @@ public class UserDao {
 			user.setLevels(Levels.valueOf(rs.getInt("levels")));
 			user.setLogin(rs.getInt("login"));
 			user.setRecommend(rs.getInt("recommend"));
-
+			user.setEmail(rs.getString("email"));
+			
 			return user;
 		}
 
