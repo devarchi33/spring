@@ -28,5 +28,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="ojdbc14.jar"/>
+	<classpathentry kind="lib" path="com.springsource.javax.activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="com.springsource.javax.mail-1.4.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
