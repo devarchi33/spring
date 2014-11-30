@@ -36,10 +36,10 @@ public class UserDaoTest {
 
 	List<User> users;
 	User[] userArray = {
-			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0),
-			new User("imfly7", "이현규", "fighting!@", Levels.SILVER, 50, 10),
-			new User("iruentech", "이루엔", "fighting!@#", Levels.SILVER, 100, 30),
-			new User("toby", "이일민", "fighting!@#$", Levels.GOLD, 200, 50) };
+			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0,"imfly7@naver.com"),
+			new User("imfly7", "이현규", "fighting!@", Levels.SILVER, 50, 10, "skyfly33@iruen.com"),
+			new User("iruentech", "이루엔", "fighting!@#", Levels.SILVER, 100, 30, "korea@hanmail.net"),
+			new User("toby", "이일민", "fighting!@#$", Levels.GOLD, 200, 50,"iruen@iruen.com") };
 
 	@Before
 	public void setUp() {

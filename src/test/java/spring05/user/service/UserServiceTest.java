@@ -44,14 +44,16 @@ public class UserServiceTest {
 
 	List<User> users;
 	User[] userArray = {
-			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0),
+			new User("skyfly33", "이동훈", "fighting!", Levels.BASIC, 1, 0,
+					"imfly7@naver.com"),
 			new User("imfly7", "이현규", "fighting!@", Levels.BASIC,
-					MIN_LOGCOUNT_FOR_SILVER, 10),
+					MIN_LOGCOUNT_FOR_SILVER, 10, "imfly8@naver.com"),
 			new User("iruentech", "이루엔", "fighting!@#", Levels.SILVER, 100,
-					MIN_RECOMMEND_FOR_GOLD),
+					MIN_RECOMMEND_FOR_GOLD, "imfly9@naver.com"),
 			new User("toby", "이일민", "fighting!@#$", Levels.SILVER, 200,
-					MIN_RECOMMEND_FOR_GOLD + 20),
-			new User("spring", "스프링", "fighting!@#$%", Levels.BASIC, 2, 0) };
+					MIN_RECOMMEND_FOR_GOLD + 20, "imfly10@naver.com"),
+			new User("spring", "스프링", "fighting!@#$%", Levels.BASIC, 2, 0,
+					"imfl11@naver.com") };
 
 	@Before
 	public void setUp() {
@@ -139,9 +141,9 @@ public class UserServiceTest {
 		logger.debug("=======  트랜잭션 처리 테스트 =======");
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
-		testUserService.setTransactionManager(transactionManager);
+		testUserService.setTransactionManager(this.transactionManager);
 
-		userDao.deleteAll();
+		// userDao.deleteAll();
 
 		for (User user : users) {
 			userDao.add(user);
